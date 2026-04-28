@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AusPath Pro — Australian Visa and Citizenship Toolkit</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:wght@700;900&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-thumb{background:rgba(200,151,58,0.35);border-radius:2px;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes blink{0%,60%,100%{opacity:.3;transform:scale(.9)}30%{opacity:1;transform:scale(1.15)}}
+@keyframes slideIn{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:translateX(0)}}
+
+:root{
+  --gold:#C8973A;--goldL:#E8B96A;
+  --dark:#0A0E14;--surf:#12181F;--surf2:#1A2230;--surf3:#222D3C;
+  --txt:#E8E6E1;--muted:#7A8494;--muted2:#4A5568;
+  --grn:#2ECC71;--grnD:#1A9950;
+  --blue:#3B82F6;--red:#EF4444;
+  --border:rgba(200,151,58,0.18);--borderHi:rgba(200,151,58,0.4);
+  --grnB:rgba(46,204,113,0.2);
+  --r:14px;--rs:9px;
+}
+
+body{background:var(--dark);color:var(--txt);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;}
+
+/* HEADER */
+.hero{background:linear-gradient(160deg,#0A0E14,#12100A,#0A0E14);border-bottom:1px solid var(--border);padding:18px 22px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:100;}
+.brand{display:flex;align-items:center;gap:11px;}
+.brand h1{font-family:'Playfair Display',serif;font-size:21px;color:var(--gold);}
+.brand p{font-size:10px;color:var(--muted);letter-spacing:1.4px;text-transform:uppercase;margin-top:1px;}
+.pro-badge{margin-left:auto;background:linear-gradient(135deg,var(--gold),var(--goldL));color:#000;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:.8px;}
+
+/* NAV */
+.nav{background:var(--surf);border-bottom:1px solid var(--border);display:flex;overflow-x:auto;scrollbar-width:none;}
+.nav::-webkit-scrollbar{display:none;}
+.nav-btn{padding:13px 16px;font-size:12px;font-family:inherit;background:transparent;border:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;font-weight:500;color:var(--muted);transition:all .2s;display:flex;align-items:center;gap:5px;}
+.nav-btn:hover{color:var(--txt);}
+.nav-btn.active{color:var(--gold);border-bottom-color:var(--gold);}
+.nav-btn.sp{color:rgba(127,255,192,0.75);}
+.nav-btn.sp.active{color:var(--grn);border-bottom-color:var(--grn);}
+
+/* PAGES */
+.page{display:none;padding:26px 18px 80px;max-width:860px;margin:0 auto;width:100%;}
+.page.active{display:block;animation:fadeUp .3s ease;}
+
+/* TITLES */
+.pt{font-family:'Playfair Display',serif;font-size:27px;font-weight:900;background:linear-gradient(135deg,#fff 30%,var(--goldL));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:5px;line-height:1.2;}
+.pt.g{background:linear-gradient(135deg,#fff 30%,#7fffc0);-webkit-background-clip:text;background-clip:text;}
+.ps{color:var(--muted);font-size:13px;margin-bottom:22px;line-height:1.6;max-width:600px;}
+
+/* CARDS */
+.card{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:19px 21px;margin-bottom:13px;}
+.card:hover{border-color:var(--borderHi);}
+.ch{display:flex;align-items:center;gap:9px;margin-bottom:12px;}
+.ci{width:35px;height:35px;border-radius:10px;background:rgba(200,151,58,0.1);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.ci.g{background:rgba(46,204,113,0.1);border-color:var(--grnB);}
+.ct{font-weight:600;font-size:14px;color:var(--goldL);}
+.cb{font-size:13px;line-height:1.75;color:var(--txt);}
+.cb p{margin-bottom:7px;}.cb p:last-child{margin-bottom:0;}
+.cb ul{margin:8px 0 8px 18px;}.cb li{margin-bottom:5px;}
+
+/* RESULT CARDS */
+.rc{background:linear-gradient(135deg,rgba(200,151,58,0.06),rgba(200,151,58,0.02));border:1px solid var(--border);border-radius:var(--r);padding:19px 21px;margin-bottom:13px;}
+.rc.g{background:linear-gradient(135deg,rgba(46,204,113,0.07),rgba(46,204,113,0.02));border-color:var(--grnB);}
+.rc.r{background:linear-gradient(135deg,rgba(239,68,68,0.07),rgba(239,68,68,0.02));border-color:rgba(239,68,68,0.2);}
+.rc.b{background:linear-gradient(135deg,rgba(59,130,246,0.07),rgba(59,130,246,0.02));border-color:rgba(59,130,246,0.2);}
+
+/* TIP CARDS */
+.tc{background:rgba(46,204,113,0.04);border:1px solid rgba(46,204,113,0.16);border-left:3px solid rgba(46,204,113,0.5);border-radius:var(--r);padding:17px 19px;margin-bottom:13px;}
+.th{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;}
+.ti{width:35px;height:35px;border-radius:9px;background:rgba(46,204,113,0.08);border:1px solid rgba(46,204,113,0.2);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.tt{font-weight:700;font-size:13px;color:#7fffc0;margin-bottom:2px;}
+.ts{font-size:11px;color:rgba(127,255,192,0.5);}
+.tb{font-size:13px;line-height:1.75;color:#d4f5e9;}
+.tb strong{color:#7fffc0;}.tb ul{margin:8px 0 8px 18px;}.tb li{margin-bottom:4px;}
+.ng{display:inline-flex;align-items:center;gap:5px;background:rgba(255,200,0,0.08);border:1px solid rgba(255,200,0,0.25);border-radius:20px;padding:4px 10px;font-size:11px;font-weight:600;color:#ffd966;margin-top:10px;}
+
+/* BOXES */
+.wb{background:rgba(200,151,58,0.06);border:1px solid rgba(200,151,58,0.2);border-radius:var(--rs);padding:11px 13px;font-size:13px;color:var(--goldL);line-height:1.6;margin:10px 0;}
+.hb{background:rgba(46,204,113,0.05);border:1px solid rgba(46,204,113,0.18);border-radius:var(--rs);padding:11px 13px;font-size:13px;color:#b8f5d0;line-height:1.6;margin:10px 0;}
+.db{background:rgba(200,151,58,0.04);border:1px solid rgba(200,151,58,0.12);border-radius:var(--rs);padding:9px 13px;font-size:12px;color:var(--muted);text-align:center;margin-bottom:17px;}
+.tb-banner{background:rgba(255,200,0,0.05);border:1px solid rgba(255,200,0,0.18);border-radius:var(--r);padding:12px 15px;font-size:12px;color:#ffd966;line-height:1.65;margin-bottom:19px;display:flex;gap:9px;align-items:flex-start;}
+
+/* PILLS */
+.pr{display:flex;flex-wrap:wrap;gap:6px;margin:9px 0;}
+.pill{background:rgba(200,151,58,0.1);border:1px solid rgba(200,151,58,0.22);border-radius:20px;padding:4px 11px;font-size:12px;color:var(--goldL);}
+.pill.g{background:rgba(46,204,113,0.1);border-color:rgba(46,204,113,0.22);color:#7fffc0;}
+.pill.b{background:rgba(59,130,246,0.1);border-color:rgba(59,130,246,0.22);color:#93c5fd;}
+.pill.r{background:rgba(239,68,68,0.1);border-color:rgba(239,68,68,0.22);color:#fca5a5;}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse;font-size:13px;}
+.tbl th{text-align:left;padding:8px 11px;background:rgba(200,151,58,0.08);color:var(--gold);font-size:11px;text-transform:uppercase;letter-spacing:.8px;border-bottom:1px solid var(--border);}
+.tbl td{padding:10px 11px;border-bottom:1px solid rgba(255,255,255,0.04);color:var(--txt);line-height:1.5;vertical-align:top;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tr:hover td{background:rgba(255,255,255,0.015);}
+
+/* STEPS */
+.sl{list-style:none;padding:0;margin:0;counter-reset:sl;}
+.sl li{counter-increment:sl;display:flex;gap:11px;margin-bottom:11px;align-items:flex-start;}
+.sl li::before{content:counter(sl);min-width:25px;height:25px;background:linear-gradient(135deg,var(--gold),var(--goldL));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#000;flex-shrink:0;margin-top:2px;}
+.st{font-size:13px;line-height:1.65;}
+
+/* CHECKLIST */
+.cl{list-style:none;padding:0;margin:0;}
+.cl li{display:flex;align-items:flex-start;gap:9px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:13px;line-height:1.6;}
+.cl li:last-child{border-bottom:none;}
+.ck{width:19px;height:19px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;margin-top:2px;}
+.ck.y{background:rgba(46,204,113,0.15);color:var(--grn);}
+.ck.w{background:rgba(255,200,0,0.15);color:#ffd966;}
+
+/* FORM */
+.fg{margin-bottom:17px;}
+.fl{display:block;font-size:12px;font-weight:600;color:var(--goldL);margin-bottom:6px;letter-spacing:.3px;}
+.fs,.fi{width:100%;background:var(--surf2);border:1px solid var(--border);border-radius:var(--rs);padding:10px 13px;font-size:13px;color:var(--txt);font-family:inherit;outline:none;transition:border-color .2s;appearance:none;}
+.fs{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23C8973A' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;}
+.fs:focus,.fi:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,151,58,0.1);}
+.fs option{background:var(--surf2);color:var(--txt);}
+.fh{font-size:11px;color:var(--muted);margin-top:5px;line-height:1.5;}
+
+/* RADIO */
+.rg{display:flex;flex-wrap:wrap;gap:7px;margin-top:6px;}
+.ro{display:flex;align-items:center;gap:6px;background:var(--surf2);border:1px solid var(--border);border-radius:var(--rs);padding:8px 12px;cursor:pointer;font-size:13px;transition:all .2s;user-select:none;}
+.ro:hover{border-color:var(--borderHi);}
+.ro.sel{background:rgba(200,151,58,0.1);border-color:var(--gold);color:var(--goldL);}
+.ro input{display:none;}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:none;border-radius:10px;padding:11px 20px;font-size:13px;font-family:inherit;font-weight:600;cursor:pointer;transition:all .2s;}
+.bg{background:linear-gradient(135deg,var(--gold),var(--goldL));color:#000;}
+.bg:hover{filter:brightness(1.08);transform:translateY(-1px);}
+.bgh{background:transparent;border:1px solid var(--border);color:var(--muted);}
+.bgh:hover{border-color:var(--borderHi);color:var(--txt);}
+.bsm{padding:7px 13px;font-size:12px;border-radius:8px;}
+
+/* PROGRESS */
+.pw{background:var(--surf3);border-radius:20px;height:8px;overflow:hidden;margin:7px 0;}
+.pf{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--gold),var(--goldL));transition:width .6s ease;}
+.pf.g{background:linear-gradient(90deg,var(--grnD),var(--grn));}
+.pf.r{background:linear-gradient(90deg,#b91c1c,#ef4444);}
+
+/* BIG SCORE */
+.sb{text-align:center;padding:26px 18px;}
+.sn{font-family:'Playfair Display',serif;font-size:68px;font-weight:900;line-height:1;background:linear-gradient(135deg,#fff,var(--goldL));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.sn.g{background:linear-gradient(135deg,#7fffc0,var(--grn));-webkit-background-clip:text;background-clip:text;}
+.sn.r{background:linear-gradient(135deg,#fca5a5,var(--red));-webkit-background-clip:text;background-clip:text;}
+.sl-label{font-size:13px;color:var(--muted);margin-top:5px;}
+.sv{font-size:17px;font-weight:600;margin-top:9px;}
+
+/* TIMELINE */
+.tl{position:relative;padding-left:26px;}
+.tl::before{content:'';position:absolute;left:9px;top:6px;bottom:6px;width:2px;background:linear-gradient(to bottom,var(--gold),transparent);}
+.tli{position:relative;margin-bottom:20px;animation:slideIn .3s ease;}
+.tli::before{content:'';position:absolute;left:-20px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--surf3);border:2px solid var(--gold);}
+.tli.done::before{background:var(--grn);border-color:var(--grn);box-shadow:0 0 8px rgba(46,204,113,0.5);}
+.tli.current::before{background:var(--gold);border-color:var(--goldL);box-shadow:0 0 8px rgba(200,151,58,0.6);}
+.tli.future::before{background:var(--surf3);border-color:var(--muted2);}
+.tlh{font-weight:600;font-size:13px;margin-bottom:3px;}
+.tlh.gold{color:var(--goldL);}
+.tlh.green{color:#7fffc0;}
+.tlh.muted{color:var(--muted);}
+.tlb{font-size:12px;color:var(--muted);line-height:1.6;}
+
+/* VISA MATCH */
+.vm{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:15px 17px;margin-bottom:9px;display:flex;align-items:flex-start;gap:13px;}
+.vm:hover{border-color:var(--borderHi);}
+.vmb{min-width:42px;height:42px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;}
+.vmb.best{background:rgba(200,151,58,0.15);border:1px solid var(--border);color:var(--gold);}
+.vmb.good{background:rgba(46,204,113,0.1);border:1px solid rgba(46,204,113,0.2);color:var(--grn);}
+.vmb.maybe{background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);color:#60a5fa;}
+.vmb.no{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.15);color:#f87171;}
+.vmbd{flex:1;}
+.vmt{font-weight:700;font-size:13px;color:var(--txt);margin-bottom:3px;}
+.vms{font-size:12px;color:var(--muted);line-height:1.5;}
+.vmtag{display:inline-block;background:rgba(200,151,58,0.1);border:1px solid var(--border);border-radius:20px;padding:2px 8px;font-size:11px;color:var(--goldL);margin-top:5px;}
+.vmtag.g{background:rgba(46,204,113,0.1);border-color:rgba(46,204,113,0.2);color:#7fffc0;}
+
+/* SECTION DIV */
+.sdiv{display:flex;align-items:center;gap:11px;margin:22px 0 17px;}
+.sdiv span{font-size:11px;font-weight:600;color:var(--gold);letter-spacing:.8px;text-transform:uppercase;white-space:nowrap;}
+.sdiv::before,.sdiv::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* POINTS BREAKDOWN ROWS */
+.prow{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:13px;}
+.prow:last-child{border-bottom:none;}
+.pcat{color:var(--muted);}
+.pval{font-weight:600;color:var(--goldL);}
+.pval.z{color:var(--muted2);}
+.ptot{display:flex;justify-content:space-between;align-items:center;padding:11px 0 0;margin-top:7px;border-top:2px solid var(--border);font-size:14px;font-weight:700;}
+.ptotv{color:var(--gold);font-size:19px;}
+
+/* STRONG COLORS */
+strong.g{color:var(--goldL);}
+strong.gg{color:#7fffc0;}
+a{color:var(--gold);}
+.ext{display:inline-flex;align-items:center;gap:5px;background:rgba(200,151,58,0.08);border:1px solid var(--border);border-radius:7px;padding:7px 12px;font-size:12px;color:var(--goldL);text-decoration:none;margin-top:10px;}
+.ext:hover{background:rgba(200,151,58,0.15);}
+.ext.g{background:rgba(46,204,113,0.06);border-color:rgba(46,204,113,0.25);color:#7fffc0;}
+
+@media(max-width:520px){
+  .hero{padding:13px 14px;}
+  .brand h1{font-size:18px;}
+  .page{padding:18px 12px 70px;}
+  .pt{font-size:22px;}
+  .tbl td,.tbl th{padding:7px 8px;font-size:12px;}
+  .sn{font-size:52px;}
+  #pts-grid{grid-template-columns:1fr!important;}
+}
+
+/* ── PAYWALL ── */
+#paywall{
+  position:fixed;inset:0;z-index:9999;
+  background:var(--dark);
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;
+  animation:fadeUp .4s ease;
+}
+.pw-box{
+  background:var(--surf);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:36px 32px;
+  max-width:440px;width:100%;
+  text-align:center;
+  box-shadow:0 0 60px rgba(200,151,58,0.08);
+}
+.pw-logo{font-size:44px;margin-bottom:14px;}
+.pw-title{
+  font-family:'Playfair Display',serif;
+  font-size:26px;font-weight:900;
+  background:linear-gradient(135deg,#fff,var(--goldL));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;margin-bottom:8px;
+}
+.pw-sub{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:24px;}
+.pw-features{
+  display:flex;flex-direction:column;gap:9px;
+  margin-bottom:28px;text-align:left;
+}
+.pw-feat{
+  display:flex;align-items:center;gap:10px;
+  font-size:13px;color:var(--txt);
+  background:var(--surf2);
+  border:1px solid var(--border);
+  border-radius:10px;padding:10px 14px;
+}
+.pw-feat-icon{font-size:18px;flex-shrink:0;}
+.pw-input-wrap{position:relative;margin-bottom:12px;}
+.pw-input{
+  width:100%;background:var(--surf2);
+  border:1px solid var(--border);
+  border-radius:10px;padding:13px 16px;
+  font-size:14px;color:var(--txt);
+  font-family:inherit;outline:none;
+  text-align:center;letter-spacing:2px;
+  transition:border-color .2s;
+}
+.pw-input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,151,58,0.1);}
+.pw-input.error{border-color:var(--red);animation:shake .3s ease;}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.pw-input.success{border-color:var(--grn);}
+.pw-btn{
+  width:100%;background:linear-gradient(135deg,var(--gold),var(--goldL));
+  border:none;border-radius:10px;padding:14px;
+  font-size:15px;font-family:inherit;font-weight:700;
+  color:#000;cursor:pointer;transition:all .2s;
+  margin-bottom:16px;
+}
+.pw-btn:hover{filter:brightness(1.08);transform:translateY(-1px);}
+.pw-btn:active{transform:translateY(0);}
+.pw-err{font-size:12px;color:var(--red);margin-bottom:10px;min-height:18px;}
+.pw-buy{font-size:12px;color:var(--muted);line-height:1.6;}
+.pw-buy a{color:var(--gold);font-weight:600;}
+.pw-divider{display:flex;align-items:center;gap:10px;margin:16px 0;color:var(--muted);font-size:12px;}
+.pw-divider::before,.pw-divider::after{content:'';flex:1;height:1px;background:var(--border);}
+#app-shell{display:none;flex-direction:column;min-height:100vh;}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════ -->
+<!-- PAYWALL SCREEN                -->
+<!-- ═══════════════════════════════ -->
+<div id="paywall">
+  <div class="pw-box">
+    <div class="pw-logo">🦘</div>
+    <div class="pw-title">AusPath Pro</div>
+    <div class="pw-sub">The complete Australian visa and citizenship toolkit. Enter your access code below to unlock everything.</div>
+
+    <div class="pw-features">
+      <div class="pw-feat"><span class="pw-feat-icon">🎯</span><span>Personalised visa assessment based on your situation</span></div>
+      <div class="pw-feat"><span class="pw-feat-icon">📊</span><span>Live points calculator with full 2025 breakdown</span></div>
+      <div class="pw-feat"><span class="pw-feat-icon">🗺️</span><span>Custom roadmap that updates after your assessment</span></div>
+      <div class="pw-feat"><span class="pw-feat-icon">💬</span><span>AI advisor powered by Claude, answers any question</span></div>
+      <div class="pw-feat"><span class="pw-feat-icon">📋</span><span>Document checklist, visa guide, insider tips and more</span></div>
+    </div>
+
+    <input class="pw-input" id="pwInput" type="text" placeholder="Enter your access code" autocomplete="off" autocapitalize="characters" spellcheck="false" onkeydown="if(event.key==='Enter')checkCode()">
+    <div class="pw-err" id="pwErr"></div>
+
+    <label style="display:flex;align-items:flex-start;gap:10px;background:var(--surf2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:14px;cursor:pointer;text-align:left">
+      <input type="checkbox" id="pwAgree" style="margin-top:2px;accent-color:var(--gold);width:16px;height:16px;flex-shrink:0">
+      <span style="font-size:12px;color:var(--muted);line-height:1.6">I understand AusPath Pro is an informational tool only and does not constitute registered migration advice. I will consult a registered MARA agent for my specific application.</span>
+    </label>
+
+    <button class="pw-btn" onclick="checkCode()">Unlock AusPath Pro ➤</button>
+
+    <div class="pw-divider">don't have a code yet?</div>
+    <div class="pw-buy">Get instant access at <a href="https://auspathpro.gumroad.com/l/yhdxzk" target="_blank" id="buyLink">auspathpro.gumroad.com</a><br>One time payment — lifetime access, works on any device.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ -->
+<!-- APP SHELL (unlocks on code)   -->
+<!-- ═══════════════════════════════ -->
+<div id="app-shell">
+
+<!-- HEADER -->
+<header class="hero">
+  <div class="brand">
+    <span style="font-size:26px">🦘</span>
+    <div>
+      <h1>AusPath Pro</h1>
+      <p>Australian Visa and Citizenship Toolkit</p>
+    </div>
+  </div>
+  <span class="pro-badge">PRO</span>
+</header>
+
+<!-- NAV -->
+<nav class="nav">
+  <button class="nav-btn active" onclick="nav('assess',this)">🎯 My Assessment</button>
+  <button class="nav-btn" onclick="nav('points',this)">📊 Points Calculator</button>
+  <button class="nav-btn" onclick="nav('roadmap',this)">🗺️ My Roadmap</button>
+  <button class="nav-btn" onclick="nav('docs',this)">📋 Documents</button>
+  <button class="nav-btn" onclick="nav('visas',this)">✈️ Visa Guide</button>
+  <button class="nav-btn" onclick="nav('test',this)">📝 Citizenship Test</button>
+  <button class="nav-btn sp" onclick="nav('tips',this)">💡 Insider Tips</button>
+  <button class="nav-btn" onclick="nav('terms',this)">📄 Terms</button>
+</nav>
+
+<!-- ════════════════════════════ -->
+<!-- ASSESSMENT PAGE             -->
+<!-- ════════════════════════════ -->
+<div id="page-assess" class="page active">
+  <div class="pt">My Personalised Assessment</div>
+  <div class="ps">Answer the questions below and get a personalised visa recommendation, estimated points score, and a custom roadmap tailored to your exact situation.</div>
+  <div class="db">Results are estimates for planning only. Always verify with the <a href="https://immi.homeaffairs.gov.au" target="_blank">Department of Home Affairs</a> or a registered MARA migration agent.</div>
+
+  <div class="card" id="aform">
+    <div class="ch"><div class="ci">🌍</div><div class="ct">Tell Us About Your Situation</div></div>
+    <div class="cb">
+
+      <div class="fg">
+        <label class="fl">What is your current situation?</label>
+        <div class="rg" id="rg-sit">
+          <label class="ro" onclick="sr('sit','outside')"><input type="radio" name="sit" value="outside">Outside Australia</label>
+          <label class="ro" onclick="sr('sit','temp')"><input type="radio" name="sit" value="temp">In Australia on a temporary visa</label>
+          <label class="ro" onclick="sr('sit','pr')"><input type="radio" name="sit" value="pr">I have Permanent Residency</label>
+          <label class="ro" onclick="sr('sit','student')"><input type="radio" name="sit" value="student">Studying in Australia</label>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label class="fl">What is your main goal?</label>
+        <div class="rg" id="rg-goal">
+          <label class="ro" onclick="sr('goal','citizen')"><input type="radio" name="goal" value="citizen">Get Australian Citizenship</label>
+          <label class="ro" onclick="sr('goal','pr')"><input type="radio" name="goal" value="pr">Get Permanent Residency first</label>
+          <label class="ro" onclick="sr('goal','visa')"><input type="radio" name="goal" value="visa">Find the right visa</label>
+          <label class="ro" onclick="sr('goal','explore')"><input type="radio" name="goal" value="explore">Understand my options</label>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label class="fl">Are you married to or in a de facto relationship with an Australian citizen or permanent resident?</label>
+        <div class="rg" id="rg-partner">
+          <label class="ro" onclick="sr('partner','yes')"><input type="radio" name="partner" value="yes">Yes, married</label>
+          <label class="ro" onclick="sr('partner','defacto')"><input type="radio" name="partner" value="defacto">De facto (not married)</label>
+          <label class="ro" onclick="sr('partner','no')"><input type="radio" name="partner" value="no">No</label>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label class="fl">Your age</label>
+        <select class="fs" id="s-age">
+          <option value="">Select age range</option>
+          <option value="18-24">18 to 24 years</option>
+          <option value="25-32">25 to 32 years</option>
+          <option value="33-39">33 to 39 years</option>
+          <option value="40-44">40 to 44 years</option>
+          <option value="45+">45 years or older</option>
+          <option value="60+">60 years or older</option>
+        </select>
+      </div>
+
+      <div class="fg">
+        <label class="fl">Highest education level</label>
+        <select class="fs" id="s-edu">
+          <option value="">Select education</option>
+          <option value="phd-aus">Doctorate (PhD) from an Australian institution</option>
+          <option value="phd-os">Doctorate (PhD) from overseas institution</option>
+          <option value="masters-res">Masters by research from Australian institution</option>
+          <option value="bach-aus">Bachelor degree from Australian institution</option>
+          <option value="bach-os">Bachelor degree from overseas institution</option>
+          <option value="dip-aus">Diploma or trade qualification from Australia</option>
+          <option value="none">No recognised qualification</option>
+        </select>
+      </div>
+
+      <div class="fg">
+        <label class="fl">English proficiency</label>
+        <select class="fs" id="s-eng">
+          <option value="">Select English level</option>
+          <option value="superior">Superior (IELTS 8.0 or PTE 79 or above)</option>
+          <option value="proficient">Proficient (IELTS 7.0 or PTE 65 or above)</option>
+          <option value="competent">Competent (IELTS 6.0 or PTE 50 or above)</option>
+          <option value="native">Native English speaker (UK, USA, Canada, NZ, Ireland)</option>
+          <option value="below">Below competent English</option>
+        </select>
+      </div>
+
+      <div class="fg">
+        <label class="fl">Skilled work experience in your occupation</label>
+        <select class="fs" id="s-work">
+          <option value="">Select work experience</option>
+          <option value="0">Less than 1 year</option>
+          <option value="1">1 to 2 years</option>
+          <option value="3">3 to 4 years</option>
+          <option value="5">5 to 7 years</option>
+          <option value="8">8 years or more</option>
+        </select>
+      </div>
+
+      <div class="fg">
+        <label class="fl">Total time lived in Australia (all visas combined)</label>
+        <select class="fs" id="s-austime">
+          <option value="">Select time in Australia</option>
+          <option value="none">Never lived in Australia</option>
+          <option value="u1">Less than 1 year</option>
+          <option value="1-2">1 to 2 years</option>
+          <option value="2-4">2 to 4 years</option>
+          <option value="4+">4 years or more</option>
+        </select>
+      </div>
+
+      <div class="fg">
+        <label class="fl">Do you currently hold Permanent Residency?</label>
+        <div class="rg" id="rg-pr">
+          <label class="ro" onclick="sr('pr','yes')"><input type="radio" name="pr" value="yes">Yes</label>
+          <label class="ro" onclick="sr('pr','no')"><input type="radio" name="pr" value="no">No</label>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label class="fl">If you have PR, how long have you held it?</label>
+        <select class="fs" id="s-prtime">
+          <option value="na">Not applicable</option>
+          <option value="u1">Less than 1 year</option>
+          <option value="1+">1 year or more</option>
+        </select>
+      </div>
+
+      <button class="btn bg" style="width:100%;margin-top:6px" onclick="runAssess()">Generate My Personalised Assessment ➤</button>
+    </div>
+  </div>
+
+  <div id="ares" style="display:none">
+    <div class="sdiv"><span>Your Results</span></div>
+    <div id="ares-content"></div>
+    <button class="btn bgh bsm" onclick="resetAssess()" style="margin-top:6px">Start Over</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════ -->
+<!-- POINTS CALCULATOR           -->
+<!-- ════════════════════════════ -->
+<div id="page-points" class="page">
+  <div class="pt">Points Calculator</div>
+  <div class="ps">Calculate your exact skilled migration points score based on the official 2025 points test. Minimum 65 points needed to submit an Expression of Interest.</div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:13px" id="pts-grid">
+
+    <div class="card"><div class="ch"><div class="ci">🎂</div><div class="ct">Age</div></div><div class="cb">
+      <select class="fs" id="pa" onchange="cp()">
+        <option value="0">Select age</option>
+        <option value="30">25 to 32 years (30 pts)</option>
+        <option value="25">18 to 24 years (25 pts)</option>
+        <option value="25">33 to 39 years (25 pts)</option>
+        <option value="15">40 to 44 years (15 pts)</option>
+        <option value="0">45 or older (0 pts, ineligible for skilled)</option>
+      </select>
+      <p class="fh">Age is assessed at time of invitation to apply, not application lodgement.</p>
+    </div></div>
+
+    <div class="card"><div class="ch"><div class="ci">🗣️</div><div class="ct">English</div></div><div class="cb">
+      <select class="fs" id="pe" onchange="cp()">
+        <option value="0">Select English level</option>
+        <option value="20">Superior (IELTS 8+ or PTE 79+) — 20 pts</option>
+        <option value="10">Proficient (IELTS 7+ or PTE 65+) — 10 pts</option>
+        <option value="0">Competent (IELTS 6+ or PTE 50+) — 0 pts</option>
+      </select>
+      <p class="fh">Native speakers from UK, US, Canada, NZ, Ireland are automatically Competent (0 pts unless they sit an English test).</p>
+    </div></div>
+
+    <div class="card"><div class="ch"><div class="ci">🌏</div><div class="ct">Overseas Work Experience</div></div><div class="cb">
+      <select class="fs" id="pwo" onchange="cp()">
+        <option value="0">Select overseas experience</option>
+        <option value="15">8 years or more — 15 pts</option>
+        <option value="10">5 to 7 years — 10 pts</option>
+        <option value="5">3 to 4 years — 5 pts</option>
+        <option value="0">Less than 3 years — 0 pts</option>
+      </select>
+      <p class="fh">Combined overseas and Australian work experience is capped at 20 points total.</p>
+    </div></div>
+
+    <div class="card"><div class="ch"><div class="ci">🇦🇺</div><div class="ct">Australian Work Experience</div></div><div class="cb">
+      <select class="fs" id="pwa" onchange="cp()">
+        <option value="0">Select Australian experience</option>
+        <option value="20">8 years or more — 20 pts</option>
+        <option value="15">5 to 7 years — 15 pts</option>
+        <option value="10">3 to 4 years — 10 pts</option>
+        <option value="5">1 to 2 years — 5 pts</option>
+        <option value="0">Less than 1 year — 0 pts</option>
+      </select>
+    </div></div>
+
+    <div class="card"><div class="ch"><div class="ci">🎓</div><div class="ct">Education</div></div><div class="cb">
+      <select class="fs" id="ped" onchange="cp()">
+        <option value="0">Select qualification</option>
+        <option value="20">Doctorate (PhD) from any recognised institution — 20 pts</option>
+        <option value="15">Bachelor degree from any recognised institution — 15 pts</option>
+        <option value="10">Diploma or trade qualification — 10 pts</option>
+        <option value="0">No recognised qualification — 0 pts</option>
+      </select>
+    </div></div>
+
+    <div class="card"><div class="ch"><div class="ci">👫</div><div class="ct">Partner Skills</div></div><div class="cb">
+      <select class="fs" id="ppt" onchange="cp()">
+        <option value="0">Select partner situation</option>
+        <option value="10">Partner has skills assessment and competent English — 10 pts</option>
+        <option value="5">Partner has competent English only — 5 pts</option>
+        <option value="10">No partner or partner is Australian citizen or PR — 10 pts</option>
+        <option value="0">Partner cannot meet English or skills requirements — 0 pts</option>
+      </select>
+    </div></div>
+  </div>
+
+  <div class="card" style="margin-top:3px">
+    <div class="ch"><div class="ci">⭐</div><div class="ct">Bonus Points</div></div>
+    <div class="cb">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px">
+        <div><label class="fl">Australian Regional Study (2+ years)</label><select class="fs" id="pbst" onchange="cp()"><option value="0">None</option><option value="5">Yes — 5 pts</option></select></div>
+        <div><label class="fl">STEM Masters or PhD from Australian Uni</label><select class="fs" id="pbstem" onchange="cp()"><option value="0">None</option><option value="5">Yes — 5 pts</option></select></div>
+        <div><label class="fl">Professional Year in Australia</label><select class="fs" id="pbpy" onchange="cp()"><option value="0">None</option><option value="5">Completed — 5 pts</option></select></div>
+        <div><label class="fl">NAATI Accreditation</label><select class="fs" id="pbna" onchange="cp()"><option value="0">None</option><option value="5">Accredited — 5 pts</option></select></div>
+        <div><label class="fl">State Nomination (Subclass 190)</label><select class="fs" id="pbsn" onchange="cp()"><option value="0">None</option><option value="5">Nominated — 5 pts</option></select></div>
+        <div><label class="fl">Regional Nomination (Subclass 491)</label><select class="fs" id="pbrn" onchange="cp()"><option value="0">None</option><option value="15">Nominated — 15 pts</option></select></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="pts-score" style="text-align:center;padding:26px">
+    <div class="sb">
+      <div class="sn" id="ptot">0</div>
+      <div class="sl-label">Total Points</div>
+      <div class="sv" id="pverd" style="color:var(--muted)">Fill in your details above</div>
+    </div>
+    <div style="max-width:420px;margin:18px auto 0">
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:3px"><span>0</span><span>65 min</span><span>80+ competitive</span><span>110</span></div>
+      <div class="pw" style="height:10px"><div class="pf" id="pbar" style="width:0%"></div></div>
+    </div>
+    <div id="pbdown" style="margin-top:18px;text-align:left;max-width:420px;margin-left:auto;margin-right:auto"></div>
+  </div>
+  <div class="wb">Points are estimates. Always use the official <a href="https://immi.homeaffairs.gov.au/help-support/tools/points-calculator" target="_blank">Home Affairs Points Calculator</a> before lodging your EOI.</div>
+</div>
+
+<!-- ════════════════════════════ -->
+<!-- ROADMAP PAGE                -->
+<!-- ════════════════════════════ -->
+<div id="page-roadmap" class="page">
+  <div class="pt">My Roadmap</div>
+  <div class="ps" id="rm-sub">Complete the Assessment tab to get a personalised roadmap. Showing the general pathway below.</div>
+  <div id="rm-content"></div>
+</div>
+
+<!-- ════════════════════════════ -->
+<!-- DOCUMENTS PAGE              -->
+<!-- ════════════════════════════ -->
+<div id="page-docs" class="page">
+  <div class="pt">Document Checklist</div>
+  <div class="ps">Everything you need to gather before applying. Start early — some documents take weeks or months to arrive.</div>
+
+  <div class="card"><div class="ch"><div class="ci">🪪</div><div class="ct">Identity Documents (Everyone)</div></div><div class="cb">
+    <ul class="cl">
+      <li><div class="ck w">!</div><div>Valid passport or travel document showing identity and nationality</div></li>
+      <li><div class="ck w">!</div><div>Birth certificate (original or certified copy)</div></li>
+      <li><div class="ck w">!</div><div>Change of name documents if your name has changed (marriage certificate, deed poll)</div></li>
+      <li><div class="ck w">!</div><div>Recent passport sized photo</div></li>
+    </ul>
+  </div></div>
+
+  <div class="card"><div class="ch"><div class="ci">🇦🇺</div><div class="ct">Residency and Visa Documents</div></div><div class="cb">
+    <ul class="cl">
+      <li><div class="ck w">!</div><div>Evidence of your current visa (grant notification letter from Home Affairs)</div></li>
+      <li><div class="ck w">!</div><div>Evidence of all previous visas held in Australia</div></li>
+      <li><div class="ck w">!</div><div>Complete travel history showing every departure and return to Australia for the past 4 years</div></li>
+      <li><div class="ck y">✓</div><div>You can download your travel history from the Home Affairs website via your ImmiAccount</div></li>
+    </ul>
+  </div></div>
+
+  <div class="card"><div class="ch"><div class="ci">⚖️</div><div class="ct">Character Documents</div></div><div class="cb">
+    <ul class="cl">
+      <li><div class="ck w">!</div><div>Australian Federal Police (AFP) National Police Check</div></li>
+      <li><div class="ck w">!</div><div>Police clearance certificates from every country you have lived in for 12 months or more since turning 16</div></li>
+      <li><div class="ck w">!</div><div>Court documents or statutory declarations if you have any criminal history to disclose (including spent convictions)</div></li>
+    </ul>
+    <div class="wb">Overseas police clearances can take 4 to 12 weeks. Start this process as early as possible. Do not wait until you are ready to lodge your application.</div>
+  </div></div>
+
+  <div class="card"><div class="ch"><div class="ci">💑</div><div class="ct">Partner Visa Applicants (Additional Documents)</div></div><div class="cb">
+    <ul class="cl">
+      <li><div class="ck w">!</div><div>Marriage certificate or evidence of registered relationship</div></li>
+      <li><div class="ck w">!</div><div>Joint bank account statements (at least 12 months recommended)</div></li>
+      <li><div class="ck w">!</div><div>Joint lease, mortgage documents, or shared utility bills</div></li>
+      <li><div class="ck w">!</div><div>Photos together over time (holidays, family events, daily life)</div></li>
+      <li><div class="ck w">!</div><div>Statutory declarations from people who know you as a couple (friends, family, colleagues)</div></li>
+      <li><div class="ck w">!</div><div>Your sponsor's Australian citizenship certificate, passport, or PR visa grant letter</div></li>
+    </ul>
+  </div></div>
+
+  <div class="card"><div class="ch"><div class="ci">💼</div><div class="ct">Skilled Migration Applicants (Additional Documents)</div></div><div class="cb">
+    <ul class="cl">
+      <li><div class="ck w">!</div><div>Skills assessment result letter from the relevant assessing authority</div></li>
+      <li><div class="ck w">!</div><div>Employment references from each employer in your nominated occupation (on company letterhead, signed, dated)</div></li>
+      <li><div class="ck w">!</div><div>Payslips and tax returns for all work in your occupation</div></li>
+      <li><div class="ck w">!</div><div>English language test results (IELTS, PTE, TOEFL, OET, or Cambridge) — must be dated within 3 years</div></li>
+      <li><div class="ck w">!</div><div>Degree certificates and academic transcripts</div></li>
+      <li><div class="ck w">!</div><div>State or regional nomination letter if applicable</div></li>
+    </ul>
+  </div></div>
+
+  <div class="hb">Start a folder on your phone and computer today labelled "AusPath Docs" and save everything the moment you receive it. Every bank statement, visa letter, and payslip. This single habit saves enormous stress at application time.</div>
+</div>
+
+<!-- ════════════════════════════ -->
+<!-- VISA GUIDE PAGE             -->
+<!-- ════════════════════════════ -->
+<div id="page-visas" class="page">
+  <div class="pt">Visa Guide</div>
+  <div class="ps">All major Australian visa types that lead toward permanent residency and citizenship, with key requirements and facts.</div>
+
+  <div class="card"><div class="ch"><div class="ci">💼</div><div class="ct">Skilled Independent (Subclass 189)</div></div><div class="cb">
+    <div class="pr"><span class="pill g">Permanent</span><span class="pill">Points based</span><span class="pill">No sponsorship</span></div>
+    <p><strong class="g">Who:</strong> Skilled workers not sponsored by employer, family, or state. Must be on the MLTSSL occupation list.</p>
+    <p><strong class="g">Requirements:</strong> At least 65 points (typically 80 or more to receive invitation), skills assessment, under 45, competent English.</p>
+    <p><strong class="g">What you get:</strong> Permanent residency from day one. Live and work anywhere in Australia.</p>
+    <div class="wb">Fee from approximately AUD 4,640. Recent rounds require 80 to 95 or more points for most occupations.</div>
+  </div></div>
+
+  <div class="card"><div class="ch"><div class="ci">🏙️</div><div class="ct">Skilled Nominated (Subclass 190)</div></div><div class="cb">
+    <div class="pr"><span class="pill g">Permanent</span><span class="pill">State nominated</span><span class="pill">+5 bonus points</span></div>
+    <p><strong class="g">Who:</strong> Skilled workers nominated by a state or territory government. Each state has its own occupation list.</p>
+    <p><strong class="g">Requirements:</strong> At least 65 points plus 5 nomination bonus. Must commit to living in the nominating state for 2 years.</p>
+    <p><strong class="g">What you get:</strong> Permanent residency. Check each state website for current occupation lists and requirements.</p>
+  </div></div>
+
+  <div class="card"><div class="ch"><div class="ci">🌿</div><div class="ct">Skilled Work Regional (Subclass 491)</div></div><div class="cb">
+    <div class="pr"><span class="pill b">Temporary (5 years)</span><span class="pill">Regional</span><span class="pill">+15 bonus points</span></div>
+    <p><strong class="g">Who:</strong> Skilled workers who want to live and work in regional Australia.</p>
+    <p><strong class="g">What you get:</strong> 5 year temporary visa. After 3 years living and working regionally, apply for Subclass 191 permanent residency. South Australia, Tasmania, and regional Queensland have strong programs with less competition.</p>
+  </div></div>
+
+  <div class="card"><div class="ch"><div class="ci">💑</div><div class="ct">Partner Visa (Subclass 820 and 801 or 309 and 100)</div></div><div class="cb">
+    <div class="pr"><span class="pill b">Temporary then Permanent</span><span class="pill">Married or de facto</span></div>
+    <p><strong class="g">Who:</strong> Married or de facto partners of Australian citizens, permanent residents, or eligible NZ citizens.</p>
+    <p><strong class="g">Requirements:</strong> Genuine and continuing relationship. De facto needs 12 months together or a registered relationship. Both partners must be 18 or older.</p>
+    <p><strong class="g">What you get:</strong> Temporary visa first, then permanent approximately 2 years after lodgement if relationship is still genuine.</p>
+    <div class="wb">Fee starts from AUD 9,365 for most applicants. One of the most expensive visas. Strong documentation of the relationship is essential.</div>
+  </div></div>
+
+  <div class="card"><div class="ch"><div class="ci">🏗️</div><div class="ct">Employer Nominated Scheme (Subclass 186)</div></div><div class="cb">
+    <div class="pr"><span class="pill g">Permanent</span><span class="pill">Employer sponsored</span></div>
+    <p><strong class="g">Who:</strong> Skilled workers nominated by an approved Australian employer. Three streams: Direct Entry (3 years experience), Temporary Residence Transition (2 years on 482 with same employer), and Labour Agreement.</p>
+    <p><strong class="g">What you get:</strong> Permanent residency. Must generally stay with nominating employer for 2 years.</p>
+  </div></div>
+
+  <div class="card"><div class="ch"><div class="ci">🎓</div><div class="ct">Student Visa (Subclass 500)</div></div><div class="cb">
+    <div class="pr"><span class="pill b">Temporary</span><span class="pill">Study pathway</span></div>
+    <p><strong class="g">Who:</strong> International students enrolled full time at an Australian registered institution.</p>
+    <p><strong class="g">What you get:</strong> Work up to 48 hours per fortnight during term. Time in Australia counts toward the 4 year citizenship residency clock. Studying in a regional area adds 5 bonus skilled migration points.</p>
+  </div></div>
+
+  <div class="card"><div class="ch"><div class="ci">🙏</div><div class="ct">Humanitarian and Refugee Visas (200 to 204)</div></div><div class="cb">
+    <div class="pr"><span class="pill g">Permanent</span><span class="pill">Humanitarian</span></div>
+    <p>Subclass 200 (Refugee), 202 (Global Special Humanitarian, requires Australian proposer), 203 (Emergency Rescue), 204 (Woman at Risk). All provide permanent residency and a pathway to citizenship after meeting residency requirements.</p>
+  </div></div>
+
+  <div class="wb">Visa fees, occupation lists, and requirements change regularly. Always verify at <a href="https://immi.homeaffairs.gov.au" target="_blank">immi.homeaffairs.gov.au</a> or consult a registered MARA migration agent before making decisions.</div>
+</div>
+
+<!-- ════════════════════════════ -->
+<!-- CITIZENSHIP TEST PAGE       -->
+<!-- ════════════════════════════ -->
+<div id="page-test" class="page">
+  <div class="pt">Citizenship Test Guide</div>
+  <div class="ps">Everything you need to know to pass the Australian citizenship test on your first attempt.</div>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-bottom:13px">
+    <div class="rc" style="text-align:center;padding:16px"><div style="font-size:26px;font-weight:700;color:var(--gold)">20</div><div style="font-size:12px;color:var(--muted)">Questions</div></div>
+    <div class="rc" style="text-align:center;padding:16px"><div style="font-size:26px;font-weight:700;color:var(--gold)">45min</div><div style="font-size:12px;color:var(--muted)">Time Allowed</div></div>
+    <div class="rc g" style="text-align:center;padding:16px"><div style="font-size:26px;font-weight:700;color:var(--grn)">75%</div><div style="font-size:12px;color:var(--muted)">Pass Mark</div></div>
+  </div>
+
+  <div class="card"><div class="ch"><div class="ci">⚠️</div><div class="ct">The Single Most Important Rule</div></div><div class="cb">
+    <p>There are 5 Australian Values questions in the test. <strong class="g">You must answer all 5 correctly,</strong> no exceptions. Even if you score 19 out of 20 overall but get one Values question wrong, you fail the entire test and must sit it again.</p>
+    <div class="hb">Focus the majority of your study time on Chapter 4 of the official booklet. Know the Australian values cold before you sit the test.</div>
+  </div></div>
+
+  <div class="card"><div class="ch"><div class="ci">📖</div><div class="ct">What the Test Covers</div></div><div class="cb">
+    <ul>
+      <li style="margin-bottom:9px"><strong class="g">Chapter 1: Australia and its people</strong> History, geography, population, symbols, and the flag</li>
+      <li style="margin-bottom:9px"><strong class="g">Chapter 2: Democratic beliefs, rights and liberties</strong> Voting, freedom of speech, equality, and the rule of law</li>
+      <li style="margin-bottom:9px"><strong class="g">Chapter 3: Government and the law</strong> How government works, the Constitution, the legal system</li>
+      <li><strong class="g">Chapter 4: Australian values (all 5 MUST be correct)</strong> What it means to be Australian, mutual respect, democracy, and equality</li>
+    </ul>
+  </div></div>
+
+  <div class="card"><div class="ch"><div class="ci">📅</div><div class="ct">Suggested Study Plan (2 to 4 Weeks)</div></div><div class="cb">
+    <ol class="sl">
+      <li><div class="st"><strong class="g">Days 1 to 2:</strong> Download and read "Australian Citizenship: Our Common Bond" in full. Free at immi.homeaffairs.gov.au in 40 or more languages.</div></li>
+      <li><div class="st"><strong class="g">Days 3 to 7:</strong> Take the official practice test on the Home Affairs website. Note every question you got wrong and reread that section of the booklet.</div></li>
+      <li><div class="st"><strong class="g">Days 8 to 10:</strong> Focus entirely on Chapter 4. Memorise the core Australian values and what they mean in practical terms.</div></li>
+      <li><div class="st"><strong class="g">Days 11 onwards:</strong> Repeat the practice test daily until you consistently score 100%. Listen to the Our Common Bond podcast (5 free episodes).</div></li>
+    </ol>
+    <a href="https://immi.homeaffairs.gov.au/citizenship/test-and-interview/prepare-for-test" target="_blank" class="ext">Official Preparation Page (Home Affairs)</a>
+  </div></div>
+
+  <div class="card"><div class="ch"><div class="ci">✅</div><div class="ct">Who Does NOT Need to Sit the Test?</div></div><div class="cb">
+    <ul><li style="margin-bottom:7px">Under 18 years old at time of application</li><li style="margin-bottom:7px">Aged 60 or older at time of application</li><li>Have a permanent or enduring physical or mental incapacity</li></ul>
+  </div></div>
+</div>
+
+<!-- ════════════════════════════ -->
+<!-- INSIDER TIPS PAGE           -->
+<!-- ════════════════════════════ -->
+<div id="page-tips" class="page">
+  <div class="pt g">Insider Tips and Shortcuts</div>
+  <div class="ps">Real pathways and strategies that many people do not know about. These could save you years.</div>
+  <div class="tb-banner"><span style="font-size:18px">⚠️</span><span><strong>Not guaranteed, here are the tips anyway.</strong> Every situation is unique. Always verify with the <a href="https://immi.homeaffairs.gov.au" target="_blank">Department of Home Affairs</a> or a registered MARA migration agent before acting on any tip.</span></div>
+
+  <div class="tc"><div class="th"><div class="ti">💍</div><div><div class="tt">Married to an Australian? You Have a Dedicated Pathway</div><div class="ts">Partner Visa leads directly to permanent residency</div></div></div><div class="tb"><p>If you are <strong>married to or in a de facto relationship with an Australian citizen or PR</strong>, the partner visa pathway can be faster and more accessible than skilled migration. Your temporary partner visa time counts toward the 4 year citizenship residency clock.</p><ul><li>Onshore: Subclass 820 then 801. Offshore: Subclass 309 then 100</li><li>Permanent visa approximately 2 years after lodgement</li><li>Same-sex couples fully eligible</li></ul><div class="ng">Not guaranteed, relationship must be proven genuine with strong evidence</div></div></div>
+
+  <div class="tc"><div class="th"><div class="ti">🤲</div><div><div class="tt">Not Married? De Facto Counts the Same</div><div class="ts">12 months together or a registered relationship qualifies</div></div></div><div class="tb"><p>Australia treats de facto relationships the same as marriages for partner visas. Genuine relationship for at least <strong>12 months</strong>, or a <strong>registered relationship</strong> in your state, is enough without being married. Register at your state registry office to count as proof without the 12 month wait.</p><div class="ng">Not guaranteed, de facto relationships require substantial documentary evidence</div></div></div>
+
+  <div class="tc"><div class="th"><div class="ti">🌾</div><div><div class="tt">Moving Regionally Opens Faster and Easier Pathways</div><div class="ts">491 to 191 pathway, state nomination with less competition</div></div></div><div class="tb"><p>Regional areas actively recruit skilled workers. Benefits include <strong>15 bonus points</strong> for regional nomination on a 491 visa, less competition than capital cities, and a direct pathway to permanent residency (191) after 3 years. South Australia (outside Adelaide), Tasmania, and regional Queensland all have strong programs.</p><div class="ng">Not guaranteed, occupation and points requirements still apply</div></div></div>
+
+  <div class="tc"><div class="th"><div class="ti">👨‍👩‍👧</div><div><div class="tt">Parent Was Australian? You May Skip the 4 Year Wait</div><div class="ts">Citizenship by descent bypasses all residency requirements</div></div></div><div class="tb"><p>If <strong>at least one of your parents was an Australian citizen at the time of your birth</strong>, even if you were born overseas, you may be eligible for citizenship by descent. No 4 year clock, no citizenship test needed. Apply through ImmiAccount or an Australian Embassy.</p><div class="ng">Not guaranteed, specific rules apply based on your birth year and parent's citizenship status at time of your birth</div></div></div>
+
+  <div class="tc"><div class="th"><div class="ti">🎂</div><div><div class="tt">Age 60 or Over? No Citizenship Test Required</div><div class="ts">Automatic exemption from the 20 question exam</div></div></div><div class="tb"><p>Applicants aged 60 or over at time of application are automatically exempt from the citizenship test. All other requirements still apply, but no studying or exam is needed. You may still attend a brief interview.</p><div class="ng">Not guaranteed, all other eligibility criteria including residency still apply</div></div></div>
+
+  <div class="tc"><div class="th"><div class="ti">⬆️</div><div><div class="tt">One English Test Can Add 10 Points Instantly</div><div class="ts">The highest ROI points boost available</div></div></div><div class="tb"><p>Going from <strong>Proficient English</strong> (IELTS 7.0) to <strong>Superior English</strong> (IELTS 8.0) adds 10 points instantly. This is often easier and faster than gaining 10 points through additional work experience, which takes years. Invest in English coaching before any other improvement strategy.</p><div class="ng">Not guaranteed, English test results vary and tests are valid for 3 years</div></div></div>
+
+  <div class="tc"><div class="th"><div class="ti">📁</div><div><div class="tt">Start a Documents Folder Today, Not When You Are Ready to Apply</div><div class="ts">The number one cause of citizenship delays is missing documents</div></div></div><div class="tb"><p>Create a folder labelled "AusPath Docs" and save every document immediately: bank statements, payslips, visa letters, every time you enter or leave Australia. Overseas police clearances alone take 4 to 12 weeks. If you wait until you are ready to apply, these delays will push back your entire timeline.</p><div class="ng">Practical tip only, does not guarantee faster processing times</div></div></div>
+
+  <div class="tc"><div class="th"><div class="ti">📊</div><div><div class="tt">Check Your Points Right Now, You May Already Qualify</div><div class="ts">Most people never check and assume they do not qualify</div></div></div><div class="tb"><p>Most people assume they do not qualify for skilled migration without ever running the numbers. Use the Points Calculator tab right now. If you score 65 or above, you can submit an Expression of Interest. If you score 80 or above, you are competitive for most occupations.</p><a href="#" onclick="nav('points',document.querySelectorAll('.nav-btn')[1]);return false" class="ext g">Go to Points Calculator</a><div class="ng">Not guaranteed, invitations are competitive and depend on occupation and demand each round</div></div></div>
+</div>
+
+<script>
+// ── PAYWALL ──
+// Add or remove codes from this list whenever you want.
+// Each code is one sale. You can generate them yourself (e.g. AUSP-1001, AUSP-1002...)
+const VALID_CODES = [
+  'AUSP-K7X2M','AUSP-Q9R4W','AUSP-H3T8N','AUSP-B6Y1P','AUSP-Z5C9F',
+  'AUSP-M2V7K','AUSP-W4J3R','AUSP-X8N6Q','AUSP-P1G5T','AUSP-F7L2B',
+  'AUSP-R9K4Z','AUSP-T3M8W','AUSP-N6X1V','AUSP-C2Q7H','AUSP-Y5B3J',
+  'AUSP-G8F4P','AUSP-V1R9M','AUSP-J4W6K','AUSP-L7N2T','AUSP-D3Z8X',
+  'AUSP-K9C5Q','AUSP-H2G7B','AUSP-M6P1F','AUSP-W8T4R','AUSP-Q3V9N',
+  'AUSP-B7J2Y','AUSP-X5L6Z','AUSP-F1K8W','AUSP-R4M3C','AUSP-T9G5P',
+  'AUSP-N2B7Q','AUSP-Z6X1H','AUSP-Y8V4J','AUSP-C3F9K','AUSP-G7R2T',
+  'AUSP-P5W8M','AUSP-J1N6B','AUSP-L4Q3Z','AUSP-D9K7X','AUSP-V2H5F',
+  'AUSP-M8C1R','AUSP-W6T9Y','AUSP-Q4B2G','AUSP-H7P5N','AUSP-X3J8V',
+  'AUSP-F9Z4W','AUSP-R2M6K','AUSP-T5L1Q','AUSP-N8G3B','AUSP-C7Y9X',
+  'DEMO-ACCESS','DEMO-AOOXE'
+];
+
+function checkCode(){
+  const raw=document.getElementById('pwInput').value.trim();
+  const code=raw.toUpperCase();
+  const errEl=document.getElementById('pwErr');
+  const inp=document.getElementById('pwInput');
+  const agreed=document.getElementById('pwAgree').checked;
+
+  if(!agreed){
+    errEl.textContent='Please tick the checkbox to confirm you understand this is an informational tool only.';
+    return;
+  }
+
+  if(!code){
+    errEl.textContent='Please enter your access code.';
+    inp.classList.add('error');
+    setTimeout(()=>inp.classList.remove('error'),600);
+    return;
+  }
+
+  if(VALID_CODES.includes(code)){
+    // Save so they don't need to re-enter next time
+    try{localStorage.setItem('auspath_code',code);}catch(e){}
+    inp.classList.add('success');
+    errEl.textContent='';
+    setTimeout(unlockApp, 400);
+  } else {
+    errEl.textContent='Invalid code. Check your purchase confirmation email and try again.';
+    inp.classList.add('error');
+    setTimeout(()=>inp.classList.remove('error'),600);
+  }
+}
+
+function unlockApp(){
+  document.getElementById('paywall').style.display='none';
+  const shell=document.getElementById('app-shell');
+  shell.style.display='flex';
+  renderRoadmap();
+}
+
+// Check if already unlocked from a previous visit
+(function(){
+  try{
+    const saved=localStorage.getItem('auspath_code');
+    if(saved && VALID_CODES.includes(saved.toUpperCase())){
+      document.getElementById('paywall').style.display='none';
+      document.getElementById('app-shell').style.display='flex';
+    }
+  }catch(e){}
+})();
+
+// ── STATE (shared across tabs) ──
+const state = {
+  sit:'', goal:'', partner:'', age:'', edu:'', eng:'', work:'', austime:'', pr:'', prtime:'na',
+  assessed: false
+};
+
+// ── NAV ──
+function nav(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  btn.classList.add('active');
+  if(id==='roadmap') renderRoadmap();
+}
+
+// ── RADIO ──
+function sr(name,val){
+  document.querySelectorAll(`#rg-${name} .ro`).forEach(o=>{
+    o.classList.toggle('sel', o.querySelector('input').value===val);
+  });
+  state[name]=val;
+}
+
+// ── ASSESSMENT ──
+function runAssess(){
+  state.sit=document.querySelector('[name="sit"]:checked')?.value||'';
+  state.goal=document.querySelector('[name="goal"]:checked')?.value||'';
+  state.partner=document.querySelector('[name="partner"]:checked')?.value||'';
+  state.age=document.getElementById('s-age').value;
+  state.edu=document.getElementById('s-edu').value;
+  state.eng=document.getElementById('s-eng').value;
+  state.work=document.getElementById('s-work').value;
+  state.austime=document.getElementById('s-austime').value;
+  state.pr=document.querySelector('[name="pr"]:checked')?.value||'';
+  state.prtime=document.getElementById('s-prtime').value;
+
+  if(!state.sit||!state.goal||!state.age||!state.edu||!state.eng){
+    alert('Please answer all required questions (current situation, main goal, age, education level, and English level) before generating your assessment.');
+    return;
+  }
+
+  state.assessed=true;
+
+  const age45=(state.age==='45+'||state.age==='60+');
+  const age60=(state.age==='60+');
+  const hasPartner=(state.partner==='yes'||state.partner==='defacto');
+  const hasPR=(state.pr==='yes');
+  const prReady=(hasPR&&state.prtime==='1+');
+  const ausReady=(state.austime==='4+');
+  const canApplyNow=(prReady&&ausReady);
+  const nearlyThere=(hasPR&&(!prReady||!ausReady));
+
+  // Points estimate
+  let pts=0;
+  if(state.age==='25-32')pts+=30;
+  else if(state.age==='18-24'||state.age==='33-39')pts+=25;
+  else if(state.age==='40-44')pts+=15;
+  if(state.eng==='superior'||state.eng==='native')pts+=20;
+  else if(state.eng==='proficient')pts+=10;
+  if(state.edu==='phd-aus'||state.edu==='phd-os')pts+=20;
+  else if(state.edu.startsWith('bach'))pts+=15;
+  else if(state.edu.startsWith('dip'))pts+=10;
+  const wk={'8':15,'5':10,'3':5,'1':0,'0':0};
+  pts+=(wk[state.work]||0);
+
+  // Visa matches
+  const visas=[];
+  if(hasPartner){
+    visas.push({m:'best',l:'Partner Visa (820 or 801 onshore, 309 or 100 offshore)',d:'Your relationship with an Australian citizen or PR is your most direct pathway to permanent residency and citizenship. Time on your temporary partner visa counts toward the 4 year citizenship clock.',t:'Highly Recommended'});
+  }
+  if(!age45){
+    visas.push({m:hasPartner?'good':'best',l:'Subclass 190 (Skilled Nominated)',d:'State or territory government nomination. Less competitive than the independent visa. Check your target state occupation list and requirements.',t:'Check occupation list'});
+    visas.push({m:'good',l:'Subclass 491 (Skilled Work Regional)',d:'Regional nomination adds 15 bonus points and is far less competitive. After 3 years in a regional area, leads directly to permanent residency via Subclass 191.',t:'Strong option if open to regional living'});
+    if(state.eng==='superior'||state.eng==='proficient'){
+      visas.push({m:'maybe',l:'Subclass 189 (Skilled Independent)',d:'No sponsorship needed but highly competitive. Most occupations require 80 or more points in recent invitation rounds.',t:'Competitive, check your score'});
+    }
+  } else {
+    visas.push({m:'no',l:'Skilled Migration (189, 190, 491)',d:'Skilled migration requires applicants to be under 45 at the time of invitation to apply. This pathway is not available to you.',t:'Not eligible (45 or older)'});
+  }
+  if(canApplyNow){
+    visas.push({m:'best',l:'Citizenship Application (Ready Now)',d:'Based on your answers you appear to meet the core residency requirements. You can apply for citizenship now. Use the Home Affairs residence calculator to confirm your exact travel dates before lodging.',t:'Apply Now'});
+  }
+  if(state.pr==='no'&&state.sit==='outside'){
+    visas.push({m:'maybe',l:'Student Visa (Subclass 500)',d:'If you are considering studying in Australia, a student visa is a common starting point. Time in Australia counts toward citizenship residency and studying regionally adds 5 bonus skilled migration points.',t:'If considering study'});
+  }
+
+  let html='';
+
+  // Status card
+  if(canApplyNow){
+    html+=`<div class="rc g" style="padding:18px"><div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:7px">Citizenship Eligibility</div><div style="font-size:18px;font-weight:700;color:var(--grn)">You appear eligible to apply for citizenship now</div><div style="font-size:13px;color:#d4f5e9;margin-top:7px">Based on your answers, you appear to meet the 4 year residency requirement and 1 year as permanent resident. Use the <a href="https://immi.homeaffairs.gov.au/citizenship/become-a-citizen/permanent-resident" target="_blank" style="color:#7fffc0">Home Affairs residence calculator</a> to confirm your exact travel dates before lodging your application.</div></div>`;
+  } else if(nearlyThere){
+    const missing=[];
+    if(!prReady)missing.push('hold PR for at least 1 year');
+    if(!ausReady)missing.push('reach 4 years total in Australia');
+    html+=`<div class="rc" style="padding:18px"><div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:7px">Citizenship Eligibility</div><div style="font-size:17px;font-weight:700;color:var(--goldL)">Almost there, keep building your residency</div><div style="font-size:13px;color:var(--muted);margin-top:7px">You have PR but still need to: ${missing.join(' and ')}. Stay in Australia, minimise overseas travel, and check back when you meet both requirements.</div></div>`;
+  } else if(!hasPR){
+    html+=`<div class="rc b" style="padding:18px"><div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:7px">Citizenship Eligibility</div><div style="font-size:17px;font-weight:700;color:#93c5fd">Secure Permanent Residency first</div><div style="font-size:13px;color:var(--muted);margin-top:7px">You cannot apply for citizenship without permanent residency. Focus on securing PR through one of the pathways below, then start the 1 year PR clock toward citizenship.</div></div>`;
+  }
+
+  // Points card (only if age allows skilled)
+  if(!age45){
+    const ptcls=pts>=80?'g':pts<65?'r':'';
+    const ptcol=pts>=80?'var(--grn)':pts<65?'var(--red)':'var(--gold)';
+    const ptlabel=pts>=80?'Competitive score, strong chance of invitation':pts>=65?'Meets minimum, but may need improvement to receive invitation':'Below minimum, needs improvement before submitting EOI';
+    html+=`<div class="rc ${ptcls}" style="padding:18px"><div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:7px">Estimated Skilled Migration Points</div><div style="font-size:36px;font-weight:900;color:${ptcol}">${pts} points</div><div style="font-size:13px;color:var(--muted);margin-top:4px">${ptlabel}</div><div class="pw" style="margin-top:11px"><div class="pf ${ptcls}" style="width:${Math.min(pts,110)/110*100}%"></div></div><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:3px"><span>0</span><span>65 min</span><span>80+ competitive</span><span>110</span></div>${pts<80&&!age45?`<p style="font-size:12px;color:var(--muted);margin-top:10px">💡 <strong style="color:var(--goldL)">Quick wins to boost your score:</strong> ${state.eng!=='superior'?'Sit an English test and aim for IELTS 8.0 or above (adds up to 10 points). ':''} Consider state or regional nomination (adds 5 to 15 points). ${state.work==='0'||state.work==='1'?'Gain more work experience in your occupation. ':''}</p>`:''}`;
+    html+=`</div>`;
+  }
+
+  // Visa matches
+  if(visas.length){
+    html+=`<div class="sdiv"><span>Your Best Visa Options</span></div>`;
+    visas.forEach(v=>{
+      const icons={best:'⭐',good:'✅',maybe:'💡',no:'❌'};
+      html+=`<div class="vm"><div class="vmb ${v.m}">${icons[v.m]}</div><div class="vmbd"><div class="vmt">${v.l}</div><div class="vms">${v.d}</div><span class="vmtag ${v.m==='good'?'g':''}">${v.t}</span></div></div>`;
+    });
+  }
+
+  // Next steps
+  html+=`<div class="sdiv"><span>Your Recommended Next Steps</span></div><div class="card"><div class="cb"><ol class="sl">`;
+  if(!hasPR&&!canApplyNow){
+    if(hasPartner) html+=`<li><div class="st"><strong class="g">Apply for a partner visa.</strong> Visit immi.homeaffairs.gov.au and start building your relationship evidence folder today. Joint bank accounts, photos, shared bills, and statutory declarations from people who know you as a couple are all important.</div></li>`;
+    else if(!age45) html+=`<li><div class="st"><strong class="g">Check your full points score</strong> using the Points Calculator tab. If you score 65 or more, submit an Expression of Interest via SkillSelect. If below 65, identify which areas you can improve first.</div></li>`;
+    else html+=`<li><div class="st"><strong class="g">Explore non-points based pathways.</strong> Since you are 45 or older, skilled migration is not available. Consider partner visa (if applicable), employer nomination (186), or parent visa. Consult a MARA migration agent to explore all your options.</div></li>`;
+  }
+  if(!age45&&state.eng!=='superior') html+=`<li><div class="st"><strong class="g">Improve your English score.</strong> Moving from Proficient to Superior English (IELTS 7 to 8) adds 10 bonus skilled migration points. This is often the fastest and cheapest improvement available.</div></li>`;
+  html+=`<li><div class="st"><strong class="g">Start your documents folder today.</strong> Open the Documents tab and begin collecting everything on that list now. Overseas police clearances alone take 4 to 12 weeks.</div></li>`;
+  if(canApplyNow) html+=`<li><div class="st"><strong class="g">Study for the citizenship test.</strong> Download "Australian Citizenship: Our Common Bond" from the Home Affairs website. Focus especially on Chapter 4 (Australian Values). Most people pass on their first attempt after 2 to 4 weeks of study.</div></li>`;
+  html+=`<li><div class="st"><strong class="g">Book a consultation with a registered MARA migration agent.</strong> This assessment is a general guide only. A MARA agent can give you personalised advice for your exact situation. Find one at <a href="https://www.mara.gov.au" target="_blank">mara.gov.au</a>.</div></li>`;
+  html+=`</ol></div></div>`;
+  html+=`<div class="wb">This assessment is based on your answers and is for general planning purposes only. It is not legal advice. Always verify with the official <a href="https://immi.homeaffairs.gov.au" target="_blank">Department of Home Affairs</a> or a registered MARA migration agent before lodging any application.</div>`;
+
+  document.getElementById('ares-content').innerHTML=html;
+  document.getElementById('ares').style.display='block';
+  document.getElementById('aform').style.display='none';
+  document.getElementById('ares').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function resetAssess(){
+  state.assessed=false;
+  document.getElementById('ares').style.display='none';
+  document.getElementById('aform').style.display='block';
+  document.querySelectorAll('.ro').forEach(o=>o.classList.remove('sel'));
+  document.querySelectorAll('.fs,.fi').forEach(s=>s.selectedIndex=0);
+}
+
+// ── ROADMAP (reads from state) ──
+function renderRoadmap(){
+  const hasPR=(state.pr==='yes');
+  const prReady=(hasPR&&state.prtime==='1+');
+  const ausReady=(state.austime==='4+');
+  const canApply=(prReady&&ausReady);
+  const hasPartner=(state.partner==='yes'||state.partner==='defacto');
+  const age45=(state.age==='45+'||state.age==='60+');
+  const age60=(state.age==='60+');
+
+  let sub='';
+  let html='';
+
+  if(!state.assessed){
+    sub='Complete the Assessment tab first to get a personalised roadmap. Showing the general pathway below.';
+    html=generalRoadmap();
+  } else {
+    sub='Your personalised roadmap based on your assessment answers.';
+
+    // Stage status helpers
+    const done=(label,body)=>`<div class="tli done"><div class="tlh green">${label}</div><div class="tlb">${body}</div></div>`;
+    const current=(label,body)=>`<div class="tli current"><div class="tlh gold">${label}</div><div class="tlb">${body}</div></div>`;
+    const future=(label,body)=>`<div class="tli future"><div class="tlh muted">${label}</div><div class="tlb">${body}</div></div>`;
+
+    html+='<div class="card"><div class="ch"><div class="ci">🗺️</div><div class="ct">Your Personal Roadmap to Citizenship</div></div><div class="cb"><div class="tl">';
+
+    // Step 1: Visa / entry
+    if(hasPR||state.sit==='temp'||state.sit==='student'){
+      html+=done('Stage 1: In Australia on a Valid Visa','You have already completed this stage. Your time in Australia is counting toward the 4 year citizenship residency clock.');
+    } else {
+      html+=current('Stage 1: Get Your First Visa to Enter Australia',hasPartner?'Your best pathway is a Partner Visa (820 or 801 if you plan to apply onshore, or 309 or 100 from outside Australia). Start building your relationship evidence folder immediately.':age45?'Skilled migration is not available at your age. Explore employer nomination (186), partner visa if applicable, or consult a MARA migration agent.':'Submit an Expression of Interest via SkillSelect for a skilled migration visa. Use the Points Calculator tab to check your score first.');
+    }
+
+    // Step 2: Secure PR
+    if(hasPR){
+      html+=done('Stage 2: Secure Permanent Residency','You hold permanent residency. This is a major milestone. Well done.');
+    } else if(state.sit==='temp'||state.sit==='student'){
+      html+=current('Stage 2: Secure Permanent Residency',hasPartner?'After lodging your partner visa, your permanent visa should be granted approximately 2 years later if the relationship remains genuine and continuing.':!age45?'Work toward submitting an Expression of Interest via SkillSelect. Use the Points Calculator tab to check your score.':'Explore employer nomination (186) or other permanent pathways with a registered MARA migration agent.');
+    } else {
+      html+=future('Stage 2: Secure Permanent Residency',hasPartner?'After getting to Australia and lodging your partner visa, your permanent visa should be granted approximately 2 years later.':!age45?'Once in Australia, work toward your skilled migration EOI. Use the Points Calculator tab to check your score first.':'Explore permanent pathways with a registered MARA migration agent.');
+    }
+
+    // Step 3: Time in Australia
+    if(ausReady){
+      html+=done('Stage 3: 4 Years Total in Australia','You have met the total 4 year residency requirement. One of the two key citizenship checkboxes is ticked.');
+    } else if(state.austime==='2-4'){
+      html+=current('Stage 3: Continue Building 4 Years in Australia','You are on your way. Minimise overseas travel. You need 4 years total with no more than 12 months total absence and no more than 90 days in the last 12 months before applying.');
+    } else if(hasPR||state.sit==='temp'||state.sit==='student'){
+      html+=current('Stage 3: Build 4 Years Total in Australia','Every day in Australia on a valid visa counts. Minimise overseas travel and track your absences carefully.');
+    } else {
+      html+=future('Stage 3: Build 4 Years Total in Australia','Once you arrive in Australia on a valid visa, every day counts toward the 4 year requirement. Avoid unnecessary overseas travel.');
+    }
+
+    // Step 4: 1 year PR
+    if(prReady){
+      html+=done('Stage 4: 1 Year as Permanent Resident','You have held PR for at least 1 year. The second key citizenship checkbox is ticked. You may be ready to apply now.');
+    } else if(hasPR){
+      html+=current('Stage 4: Complete 1 Year as Permanent Resident','You have PR but not yet 1 full year. Stay in Australia and let this time accumulate. You must hold PR for at least 1 year before applying for citizenship.');
+    } else {
+      html+=future('Stage 4: Complete 1 Year as Permanent Resident','Once you receive PR, you must hold it for at least 1 year before you can apply for citizenship. The clock starts the day your PR is granted.');
+    }
+
+    // Step 5: Apply
+    if(canApply){
+      html+=current('Stage 5: Apply for Citizenship Now','You appear ready. Lodge your application via ImmiAccount at immi.homeaffairs.gov.au. Pay the $540 fee. Wait for your test invitation.');
+    } else {
+      html+=future('Stage 5: Apply for Citizenship','Once both residency requirements are met, lodge your citizenship application via ImmiAccount. Fee is AUD 540 for adults.');
+    }
+
+    // Step 6: Test
+    if(age60){
+      html+=future('Stage 6: Citizenship Test (Exempt)','You are 60 or older so you are automatically exempt from sitting the citizenship test. You may still attend a brief interview.');
+    } else {
+      html+=future('Stage 6: Study and Pass the Citizenship Test','Study "Australian Citizenship: Our Common Bond" (free from Home Affairs). The test has 20 questions and you need 75% to pass. All 5 Australian Values questions must be correct. Most people pass on their first attempt after 2 to 4 weeks of study.');
+    }
+
+    // Step 7: Decision
+    html+=future('Stage 7: Wait for Decision','Processing takes approximately 6 to 12 months or more. Stay in Australia when the decision is made.');
+
+    // Step 8: Ceremony
+    html+=future('Stage 8: Attend Ceremony and Receive Certificate','Compulsory ceremony organised by your local council. Make the Australian Citizenship Pledge. You are now officially an Australian citizen. Apply for your Australian passport immediately after.');
+
+    html+='</div></div></div>';
+
+    // Key dates summary
+    html+=`<div class="sdiv"><span>Key Requirements Summary</span></div>`;
+    html+=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:11px">`;
+    const reqCard=(label,val,note,ok)=>`<div class="rc ${ok?'g':''}" style="padding:15px"><div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px">${label}</div><div style="font-size:22px;font-weight:700;color:${ok?'var(--grn)':'var(--gold)'}">${val}</div><div style="font-size:11px;color:var(--muted);margin-top:3px">${note}</div></div>`;
+    html+=reqCard('Total Residency','4 Years','On any valid Australian visa',ausReady);
+    html+=reqCard('PR Requirement','1 Year','As a permanent resident before applying',prReady);
+    html+=reqCard('Max Absence (4 yrs)','12 Months','Total days outside Australia',false);
+    html+=reqCard('Max Absence (last yr)','90 Days','In the 12 months before applying',false);
+    html+=`</div>`;
+
+    if(canApply){
+      html+=`<div class="hb" style="margin-top:13px">You appear to meet all residency requirements. Use the official <a href="https://immi.homeaffairs.gov.au/citizenship/become-a-citizen/permanent-resident" target="_blank" style="color:var(--grn)">Home Affairs Residence Calculator</a> to confirm your exact travel dates, then lodge your application.</div>`;
+    }
+  }
+
+  document.getElementById('rm-sub').textContent=sub;
+  document.getElementById('rm-content').innerHTML=html;
+}
+
+function generalRoadmap(){
+  const stages=[
+    ['Stage 1: Get a Temporary Visa','Student visa, partner visa, work visa, or other temporary visa. Time varies from months to years depending on your pathway. Every day in Australia on a valid visa counts toward the 4 year citizenship clock.'],
+    ['Stage 2: Build Your Eligibility','Work in your skilled occupation, improve English, study in Australia, save evidence. Avoid unnecessary overseas travel.'],
+    ['Stage 3: Secure Permanent Residency','Apply for PR through your pathway (skilled, partner, employer, humanitarian). Processing times range from 6 months to several years depending on visa type.'],
+    ['Stage 4: Complete 1 Year of Permanent Residency','Hold PR for at least 1 year before applying for citizenship. This 1 year must be immediately before you apply.'],
+    ['Stage 5: Apply for Citizenship','Lodge via ImmiAccount at immi.homeaffairs.gov.au. Pay the $540 fee. Wait for your test invitation.'],
+    ['Stage 6: Study and Pass the Citizenship Test','Read "Australian Citizenship: Our Common Bond" (free from Home Affairs). 20 questions, 75% to pass, all 5 Australian Values correct. Most people pass first attempt.'],
+    ['Stage 7: Wait for a Decision (6 to 12 months or more)','Stay in Australia when the decision is made.'],
+    ['Stage 8: Attend Ceremony and Receive Certificate','Compulsory ceremony. Make the Australian Citizenship Pledge. Apply for your Australian passport immediately.'],
+  ];
+  let h='<div class="card"><div class="ch"><div class="ci">🔄</div><div class="ct">General Journey to Citizenship</div></div><div class="cb"><div class="tl">';
+  stages.forEach(([label,body])=>{
+    h+=`<div class="tli"><div class="tlh gold">${label}</div><div class="tlb">${body}</div></div>`;
+  });
+  h+='</div></div></div>';
+  h+=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:13px">`;
+  [['Total Residency','4 Years','On any valid Australian visa'],['PR Requirement','1 Year','Before applying for citizenship'],['Max Absence (4 yrs)','12 Months','Total days outside Australia'],['Max Absence (last yr)','90 Days','In the 12 months before applying']].forEach(([l,v,n])=>{
+    h+=`<div class="rc" style="padding:15px"><div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px">${l}</div><div style="font-size:22px;font-weight:700;color:var(--gold)">${v}</div><div style="font-size:11px;color:var(--muted);margin-top:3px">${n}</div></div>`;
+  });
+  h+='</div>';
+  h+=`<div class="hb" style="margin-top:13px">Complete the <strong>My Assessment</strong> tab to get a roadmap tailored to your specific situation, current stage, and visa pathway.</div>`;
+  return h;
+}
+
+// ── POINTS CALCULATOR ──
+function cp(){
+  const age=parseInt(document.getElementById('pa').value)||0;
+  const eng=parseInt(document.getElementById('pe').value)||0;
+  const wos=parseInt(document.getElementById('pwo').value)||0;
+  const was=parseInt(document.getElementById('pwa').value)||0;
+  const edu=parseInt(document.getElementById('ped').value)||0;
+  const ppt=parseInt(document.getElementById('ppt').value)||0;
+  const bst=parseInt(document.getElementById('pbst').value)||0;
+  const bstem=parseInt(document.getElementById('pbstem').value)||0;
+  const bpy=parseInt(document.getElementById('pbpy').value)||0;
+  const bna=parseInt(document.getElementById('pbna').value)||0;
+  const bsn=parseInt(document.getElementById('pbsn').value)||0;
+  const brn=parseInt(document.getElementById('pbrn').value)||0;
+
+  const wc=Math.min(wos+was,20);
+  const bonus=bst+bstem+bpy+bna+bsn+brn;
+  const total=age+eng+wc+edu+ppt+bonus;
+
+  document.getElementById('ptot').textContent=total;
+  document.getElementById('ptot').className='sn'+(total>=80?' g':total<65?' r':'');
+  document.getElementById('pbar').style.width=Math.min(total,110)/110*100+'%';
+  document.getElementById('pbar').className='pf'+(total>=80?' g':total<65?' r':'');
+
+  const v=document.getElementById('pverd');
+  if(total===0){v.textContent='Fill in your details above';v.style.color='var(--muted)';}
+  else if(total<65){v.textContent='Below minimum (need 65 to submit EOI)';v.style.color='var(--red)';}
+  else if(total<80){v.textContent='Meets minimum but may need more to receive an invitation';v.style.color='var(--gold)';}
+  else if(total<90){v.textContent='Competitive score for most occupations';v.style.color='var(--grn)';}
+  else{v.textContent='Very strong score, excellent invitation chances';v.style.color='var(--grn)';}
+
+  if(total>0){
+    document.getElementById('pbdown').innerHTML=`
+      <div class="prow"><span class="pcat">Age</span><span class="pval ${age===0?'z':''}">${age} pts</span></div>
+      <div class="prow"><span class="pcat">English</span><span class="pval ${eng===0?'z':''}">${eng} pts</span></div>
+      <div class="prow"><span class="pcat">Work Experience (capped at 20 combined)</span><span class="pval ${wc===0?'z':''}">${wc} pts</span></div>
+      <div class="prow"><span class="pcat">Education</span><span class="pval ${edu===0?'z':''}">${edu} pts</span></div>
+      <div class="prow"><span class="pcat">Partner Skills</span><span class="pval ${ppt===0?'z':''}">${ppt} pts</span></div>
+      <div class="prow"><span class="pcat">Bonus Points</span><span class="pval ${bonus===0?'z':''}">${bonus} pts</span></div>
+      <div class="ptot"><span>Total</span><span class="ptotv">${total}</span></div>
+    `;
+  }
+}
+
+// ── INIT handled by unlockApp() ──
+</script>
+
+<!-- ════════════════════════════ -->
+<!-- TERMS AND DISCLAIMER PAGE   -->
+<!-- ════════════════════════════ -->
+<div id="page-terms" class="page">
+  <div class="pt">Terms and Disclaimer</div>
+  <div class="ps">Please read the following carefully before using AusPath Pro.</div>
+
+  <div class="card">
+    <div class="ch"><div class="ci">📋</div><div class="ct">General Information Only</div></div>
+    <div class="cb">
+      <p>AusPath Pro is an <strong class="g">informational tool only</strong>. It is designed to help you understand your general options before consulting a professional. It does not constitute registered migration advice under Australian law.</p>
+      <p>All information provided by AusPath Pro is based on publicly available information from the Australian Department of Home Affairs and is intended as a general starting point only.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ch"><div class="ci">⚖️</div><div class="ct">Not a Registered Migration Agent</div></div>
+    <div class="cb">
+      <p>AusPath Pro is not operated by a registered migration agent. Under the <strong class="g">Migration Act 1958</strong> and the <strong class="g">Migration Agents Registration Authority (MARA)</strong> regulations, only registered migration agents can provide migration advice for a fee.</p>
+      <p>AusPath Pro does not provide migration advice. It provides general educational information about Australian visa and citizenship pathways based on publicly available government information.</p>
+      <p>For advice specific to your personal situation, always consult a registered MARA migration agent at <a href="https://www.mara.gov.au" target="_blank">mara.gov.au</a>.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ch"><div class="ci">🎯</div><div class="ct">Accuracy of Information</div></div>
+    <div class="cb">
+      <p>While every effort is made to ensure information is accurate and up to date, Australian visa and citizenship rules change regularly. AusPath Pro makes no guarantee that all information is current or accurate at the time of use.</p>
+      <p>Always verify any information with the official <a href="https://immi.homeaffairs.gov.au" target="_blank">Department of Home Affairs website</a> before making any decisions.</p>
+      <p>Assessment results, points scores, and roadmaps generated by AusPath Pro are <strong class="g">estimates based on user input only</strong> and do not guarantee visa approval, citizenship approval, or any particular outcome.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ch"><div class="ci">🔒</div><div class="ct">No Liability</div></div>
+    <div class="cb">
+      <p>AusPath Pro and its creators accept no liability for any decisions made based on information provided by this tool. Users rely on this tool entirely at their own risk.</p>
+      <p>AusPath Pro is not responsible for any visa refusals, delays, financial losses, or other consequences arising from use of this tool.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ch"><div class="ci">💰</div><div class="ct">Refund Policy</div></div>
+    <div class="cb">
+      <p>AusPath Pro is a digital informational product. Due to the nature of digital products, <strong class="g">all sales are final and no refunds are offered</strong> once access has been granted.</p>
+      <p>By purchasing and using AusPath Pro, you acknowledge that you have read and agreed to these terms.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ch"><div class="ci">📧</div><div class="ct">Contact</div></div>
+    <div class="cb">
+      <p>If you have any questions about these terms or about AusPath Pro, contact us at <a href="mailto:auspathppro@gmail.com">auspathppro@gmail.com</a> and we will respond within 24 hours.</p>
+    </div>
+  </div>
+
+  <div class="wb">By using AusPath Pro you agree to these terms. This tool is a starting point to help you understand your options. Always consult a registered MARA migration agent for advice specific to your situation.</div>
+</div>
+
+</div><!-- end app-shell -->
+</body>
+</html>
